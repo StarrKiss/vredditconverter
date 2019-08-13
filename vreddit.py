@@ -31,7 +31,6 @@ class Handler():
 
         output.set_text(link)
 
-        copy_text(link);
 
 def get_url(url2):
     url2 = url2 + ".json"
@@ -44,7 +43,7 @@ def get_url(url2):
 
     json_obj = req = requests.get(url, headers=hdr)
     json = json_obj.json()
-    link = json[0]["data"]["children"][0]['data']['url']
+    link = json[0]['data']['children'][0]['data']['media']['reddit_video']['fallback_url']
 
     return link
 
