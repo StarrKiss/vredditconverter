@@ -3,14 +3,16 @@ from urllib.request import urlopen, Request
 import json
 import requests
 import gi
+
 import subprocess
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 
 
 class Handler():
 
+    shareLink = ""
 
     def onSubmit(self, button):
 
@@ -18,6 +20,9 @@ class Handler():
 
         output = builder.get_object("output")
         urlinput = entry.get_text()
+
+        copy = builder.get_object("copy")
+
 
 
         #finalurl = get_url(urlinput)
@@ -27,9 +32,17 @@ class Handler():
 
 
         print(link)
-
-
+        copy.show()
+        global shareLink
+        shareLink = link
         output.set_text(link)
+
+    def onCopy(self, button):
+        global shareLink
+        clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        clipboard.set_text(shareLink, -1)
+        print(shareLink)
+
 
 
 def get_url(url2):
@@ -58,6 +71,10 @@ window = builder.get_object("window1")
 
 builder.connect_signals(Handler())
 
+window.connect("destroy", Gtk.main_quit)
+
 window.show_all();
+
+
 
 Gtk.main()
